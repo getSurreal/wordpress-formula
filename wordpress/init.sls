@@ -12,21 +12,21 @@
 download_wordpress_{{ id }}:
  cmd.run:
   - cwd: {{ site.get('path') }}
-  - name: 'wget https://wordpress.org/latest.tar.gz"'
+  - name: 'wget https://wordpress.org/latest.tar.gz'
   - runas: {{ site.get('dbuser') }}
   - unless: test -f {{ site.get('path') }}/wp-config.php
 
 extract_wordpress_{{ id }}:
  cmd.run:
   - cwd: {{ site.get('path') }}
-  - name: 'tar -xzvf latest.tar.gz"'
+  - name: 'tar -xzvf latest.tar.gz'
   - runas: {{ site.get('dbuser') }}
   - unless: test -f {{ site.get('path') }}/wp-config.php
 
 move_wordpress_{{ id }}:
  cmd.run:
   - cwd: {{ site.get('path') }}
-  - name: 'mv wordpress/* . && rm -rf wordpress"'
+  - name: 'mv wordpress/* . && rm -rf wordpress'
   - runas: {{ site.get('dbuser') }}
   - unless: test -f {{ site.get('path') }}/wp-config.php
 
