@@ -71,6 +71,62 @@ wp-config-dbhost_{{ id }}:
     - content: "define('DB_NAME', '{{ site.dbhost }}');"
     - mode: replace
 
+wp-config-AUTH_KEY_{{ id }}:
+  file.line:
+    - name: {{ site.path }}/wp-config.php
+    - match: ^define\('AUTH_KEY'.
+    - content: "define('AUTH_KEY', '{{ salt['random.get_str'](32) }}');"
+    - mode: replace
+
+wp-config-SECURE_AUTH_KEY_{{ id }}:
+  file.line:
+    - name: {{ site.path }}/wp-config.php
+    - match: ^define\('SECURE_AUTH_KEY'.
+    - content: "define('SECURE_AUTH_KEY', '{{ salt['random.get_str'](32) }}');"
+    - mode: replace
+
+wp-config-LOGGED_IN_KEY_{{ id }}:
+  file.line:
+    - name: {{ site.path }}/wp-config.php
+    - match: ^define\('LOGGED_IN_KEY'.
+    - content: "define('LOGGED_IN_KEY', '{{ salt['random.get_str'](32) }}');"
+    - mode: replace
+
+wp-config-NONCE_KEY_{{ id }}:
+  file.line:
+    - name: {{ site.path }}/wp-config.php
+    - match: ^define\('ANONCE_KEY'.
+    - content: "define('NONCE_KEY', '{{ salt['random.get_str'](32) }}');"
+    - mode: replace
+
+wp-config-AUTH_SALT_{{ id }}:
+  file.line:
+    - name: {{ site.path }}/wp-config.php
+    - match: ^define\('AUTH_SALT'.
+    - content: "define('AUTH_SALT', '{{ salt['random.get_str'](32) }}');"
+    - mode: replace
+
+wp-config-SECURE_AUTH_SALT_{{ id }}:
+  file.line:
+    - name: {{ site.path }}/wp-config.php
+    - match: ^define\('SECURE_AUTH_SALT'.
+    - content: "define('SECURE_AUTH_SALT', '{{ salt['random.get_str'](32) }}');"
+    - mode: replace
+
+wp-config-LOGGED_IN_SALT_{{ id }}:
+  file.line:
+    - name: {{ site.path }}/wp-config.php
+    - match: ^define\('LOGGED_IN_SALT'.
+    - content: "define('LOGGED_IN_SALT', '{{ salt['random.get_str'](32) }}');"
+    - mode: replace
+
+wp-config-NONCE_SALT_{{ id }}:
+  file.line:
+    - name: {{ site.path }}/wp-config.php
+    - match: ^define\('NONCE_SALT'.
+    - content: "define('NONCE_SALT', '{{ salt['random.get_str'](32) }}');"
+    - mode: replace
+
 #{{ site.path }}/wp-config.php:
 #  file.managed:
 #    - source: salt://wordpress/files/wp-config.php
