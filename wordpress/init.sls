@@ -49,7 +49,7 @@ wp-config-database:
     - pattern: "^define('DB_NAME'"
     - repl: "define('DB_NAME', '{{ site.database }}');"
     - watch:
-      {{ site.path }}/wp-config.php
+      - {{ site.path }}/wp-config.php
 
 wp-config-dbuser:
   file.replace:
@@ -57,7 +57,7 @@ wp-config-dbuser:
     - pattern: "^define('DB_USER'"
     - repl: "define('DB_NAME', '{{ site.dbuser }}');"
     - watch:
-      {{ site.path }}/wp-config.php
+      - {{ site.path }}/wp-config.php
 
 wp-config-dbpass:
   file.replace:
@@ -65,7 +65,7 @@ wp-config-dbpass:
     - pattern: "^define('DB_PASSWORD'"
     - repl: "define('DB_NAME', '{{ site.dbpass }}');"
     - watch:
-      {{ site.path }}/wp-config.php
+      - {{ site.path }}/wp-config.php
 
 wp-config-dbhost:
   file.replace:
@@ -73,7 +73,7 @@ wp-config-dbhost:
     - pattern: "^define('DB_HOST'"
     - repl: "define('DB_NAME', '{{ site.dbhost }}');"
     - watch:
-      {{ site.path }}/wp-config.php
+      - {{ site.path }}/wp-config.php
 
 #{{ site.path }}/wp-config.php:
 #  file.managed:
