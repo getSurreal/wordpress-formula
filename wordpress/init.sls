@@ -41,25 +41,25 @@ wp-config-database:
   file.replace:
     - name: {{ site.path }}/wp-config.php
     - pattern: ^define('DB_NAME'
-    - define('DB_NAME', '{{ site.database }}');
+    - repl: define('DB_NAME', '{{ site.database }}');
 
 wp-config-dbuser:
   file.replace:
     - name: {{ site.path }}/wp-config.php
     - pattern: ^define('DB_USER'
-    - define('DB_NAME', '{{ site.dbuser }}');
+    - repl: define('DB_NAME', '{{ site.dbuser }}');
 
 wp-config-dbpass:
   file.replace:
     - name: {{ site.path }}/wp-config.php
     - pattern: ^define('DB_PASSWORD'
-    - define('DB_NAME', '{{ site.dbpass }}');
+    - repl: define('DB_NAME', '{{ site.dbpass }}');
 
 wp-config-dbhost:
   file.replace:
     - name: {{ site.path }}/wp-config.php
     - pattern: ^define('DB_HOST'
-    - define('DB_NAME', '{{ site.dbhost }}');
+    - repl: define('DB_NAME', '{{ site.dbhost }}');
 
 #{{ site.path }}/wp-config.php:
 #  file.managed:
