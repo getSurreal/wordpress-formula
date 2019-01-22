@@ -32,13 +32,44 @@ move_wordpress_{{ id }}:
 
 {{ site.path }}/wp-config.php:
   file.managed:
-    - source: salt://wordpress/files/wp-config.php
-    - template: jinja
-    - context:
-      site: {{ site }}
+    - source: {{ site.path }}/wp-config-sample.php
     - user: {{ site.dbuser }}
     - group: {{ site.dbuser }}
     - mode: 655
+
+wp-config-database:
+  file.replace:
+    - name: {{ site.path }}/wp-config.php
+    - pattern: ^define('DB_NAME'
+    - define('DB_NAME', '{{ site.database }}');
+
+wp-config-dbuser:
+  file.replace:
+    - name: {{ site.path }}/wp-config.php
+    - pattern: ^define('DB_USER'
+    - define('DB_NAME', '{{ site.dbuser }}');
+
+wp-config-dbpass:
+  file.replace:
+    - name: {{ site.path }}/wp-config.php
+    - pattern: ^define('DB_PASSWORD'
+    - define('DB_NAME', '{{ site.dbpass }}');
+
+wp-config-dbhost:
+  file.replace:
+    - name: {{ site.path }}/wp-config.php
+    - pattern: ^define('DB_HOST'
+    - define('DB_NAME', '{{ site.dbhost }}');
+
+#{{ site.path }}/wp-config.php:
+#  file.managed:
+#    - source: salt://wordpress/files/wp-config.php
+#    - template: jinja
+#    - context:
+#      site: {{ site }}
+#    - user: {{ site.dbuser }}
+#    - group: {{ site.dbuser }}
+#    - mode: 655
 
 {{ site.path }}/.htaccess:
   file.managed:
