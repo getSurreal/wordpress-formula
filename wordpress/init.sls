@@ -44,33 +44,35 @@ move_wordpress_{{ id }}:
       - move_wordpress_{{ id }}
 
 wp-config-database_{{ id }}:
-  file.replace:
+  file.line:
     - name: {{ site.path }}/wp-config.php
-    - pattern: "^define('DB_NAME'"
-    - repl: "define('DB_NAME', '{{ site.database }}');"
+    - match: "^define('DB_NAME'"
+    - content: "define('DB_NAME', '{{ site.database }}');"
     - unless: !test -f {{ site.path }}/wp-config.php
+    - mode: replace
 
 wp-config-dbuser_{{ id }}:
-  file.replace:
+  file.line:
     - name: {{ site.path }}/wp-config.php
-    - pattern: "^define('DB_USER'"
-    - repl: "define('DB_NAME', '{{ site.dbuser }}');"
+    - match: "^define('DB_USER'"
+    - content: "define('DB_NAME', '{{ site.dbuser }}');"
     - unless: !test -f {{ site.path }}/wp-config.php
+    - mode: replace
 
 wp-config-dbpass_{{ id }}:
-  file.replace:
+  file.line:
     - name: {{ site.path }}/wp-config.php
-    - pattern: "^define('DB_PASSWORD'"
-    - repl: "define('DB_NAME', '{{ site.dbpass }}');"
+    - match: "^define('DB_PASSWORD'"
+    - content: "define('DB_NAME', '{{ site.dbpass }}');"
     - unless: !test -f {{ site.path }}/wp-config.php
-
+    - mode: replace
 
 wp-config-dbhost_{{ id }}:
-  file.replace:
+  file.line:
     - name: {{ site.path }}/wp-config.php
-    - pattern: "^define('DB_HOST'"
-    - repl: "define('DB_NAME', '{{ site.dbhost }}');"
-    - unless: !test -f {{ site.path }}/wp-config.php
+    - match: ^define\('DB_HOST'.
+    - content: "define('DB_NAME', '{{ site.dbhost }}');"
+    - mode: replace
 
 #{{ site.path }}/wp-config.php:
 #  file.managed:
