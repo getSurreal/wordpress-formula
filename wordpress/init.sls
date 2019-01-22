@@ -48,7 +48,6 @@ wp-config-database_{{ id }}:
     - name: {{ site.path }}/wp-config.php
     - match: "^define('DB_NAME'"
     - content: "define('DB_NAME', '{{ site.database }}');"
-    - unless: !test -f {{ site.path }}/wp-config.php
     - mode: replace
 
 wp-config-dbuser_{{ id }}:
@@ -56,7 +55,6 @@ wp-config-dbuser_{{ id }}:
     - name: {{ site.path }}/wp-config.php
     - match: "^define('DB_USER'"
     - content: "define('DB_NAME', '{{ site.dbuser }}');"
-    - unless: !test -f {{ site.path }}/wp-config.php
     - mode: replace
 
 wp-config-dbpass_{{ id }}:
@@ -64,7 +62,6 @@ wp-config-dbpass_{{ id }}:
     - name: {{ site.path }}/wp-config.php
     - match: "^define('DB_PASSWORD'"
     - content: "define('DB_NAME', '{{ site.dbpass }}');"
-    - unless: !test -f {{ site.path }}/wp-config.php
     - mode: replace
 
 wp-config-dbhost_{{ id }}:
