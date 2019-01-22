@@ -46,21 +46,21 @@ move_wordpress_{{ id }}:
 wp-config-database_{{ id }}:
   file.line:
     - name: {{ site.path }}/wp-config.php
-    - match: "^define('DB_NAME'"
+    - match: ^define\('DB_NAME'.
     - content: "define('DB_NAME', '{{ site.database }}');"
     - mode: replace
 
 wp-config-dbuser_{{ id }}:
   file.line:
     - name: {{ site.path }}/wp-config.php
-    - match: "^define('DB_USER'"
+    - match: ^define\('DB_USER'.
     - content: "define('DB_NAME', '{{ site.dbuser }}');"
     - mode: replace
 
 wp-config-dbpass_{{ id }}:
   file.line:
     - name: {{ site.path }}/wp-config.php
-    - match: "^define('DB_PASSWORD'"
+    - match: ^define\('DB_PASSWORD'.
     - content: "define('DB_NAME', '{{ site.dbpass }}');"
     - mode: replace
 
