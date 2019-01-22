@@ -22,6 +22,8 @@ extract_wordpress_{{ id }}:
   - name: 'tar -xzvf latest.tar.gz'
   - runas: {{ site.dbuser }}
   - unless: test -f {{ site.path }}/wp-settings.php
+  - watch:
+    - download_wordpress_{{ id }}
 
 move_wordpress_{{ id }}:
  cmd.run:
@@ -29,6 +31,8 @@ move_wordpress_{{ id }}:
   - name: 'mv wordpress/* . && rm -rf wordpress'
   - runas: {{ site.dbuser }}
   - unless: test -f {{ site.path }}/wp-settings.php
+  - watch:
+    - extract_wordpress_{{ id }}
 
 {{ site.path }}/wp-config.php:
   file.managed:
@@ -36,30 +40,40 @@ move_wordpress_{{ id }}:
     - user: {{ site.dbuser }}
     - group: {{ site.dbuser }}
     - mode: 655
+    - watch:
+      - move_wordpress_{{ id }}
 
 wp-config-database:
   file.replace:
     - name: {{ site.path }}/wp-config.php
-    - pattern: ^define('DB_NAME'
-    - repl: define('DB_NAME', '{{ site.database }}');
+    - pattern: "^define('DB_NAME'"
+    - repl: "define('DB_NAME', '{{ site.database }}');"
+    - watch:
+      {{ site.path }}/wp-config.php
 
 wp-config-dbuser:
   file.replace:
     - name: {{ site.path }}/wp-config.php
-    - pattern: ^define('DB_USER'
-    - repl: define('DB_NAME', '{{ site.dbuser }}');
+    - pattern: "^define('DB_USER'"
+    - repl: "define('DB_NAME', '{{ site.dbuser }}');"
+    - watch:
+      {{ site.path }}/wp-config.php
 
 wp-config-dbpass:
   file.replace:
     - name: {{ site.path }}/wp-config.php
-    - pattern: ^define('DB_PASSWORD'
-    - repl: define('DB_NAME', '{{ site.dbpass }}');
+    - pattern: "^define('DB_PASSWORD'"
+    - repl: "define('DB_NAME', '{{ site.dbpass }}');"
+    - watch:
+      {{ site.path }}/wp-config.php
 
 wp-config-dbhost:
   file.replace:
     - name: {{ site.path }}/wp-config.php
-    - pattern: ^define('DB_HOST'
-    - repl: define('DB_NAME', '{{ site.dbhost }}');
+    - pattern: "^define('DB_HOST'"
+    - repl: "define('DB_NAME', '{{ site.dbhost }}');"
+    - watch:
+      {{ site.path }}/wp-config.php
 
 #{{ site.path }}/wp-config.php:
 #  file.managed:
