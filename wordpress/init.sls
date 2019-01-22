@@ -43,37 +43,34 @@ move_wordpress_{{ id }}:
     - watch:
       - move_wordpress_{{ id }}
 
-wp-config-database:
+wp-config-database_{{ id }}:
   file.replace:
     - name: {{ site.path }}/wp-config.php
     - pattern: "^define('DB_NAME'"
     - repl: "define('DB_NAME', '{{ site.database }}');"
-    - watch:
-      - {{ site.path }}/wp-config.php
+    - unless: !test -f {{ site.path }}/wp-config.php
 
-wp-config-dbuser:
+wp-config-dbuser_{{ id }}:
   file.replace:
     - name: {{ site.path }}/wp-config.php
     - pattern: "^define('DB_USER'"
     - repl: "define('DB_NAME', '{{ site.dbuser }}');"
-    - watch:
-      - {{ site.path }}/wp-config.php
+    - unless: !test -f {{ site.path }}/wp-config.php
 
-wp-config-dbpass:
+wp-config-dbpass_{{ id }}:
   file.replace:
     - name: {{ site.path }}/wp-config.php
     - pattern: "^define('DB_PASSWORD'"
     - repl: "define('DB_NAME', '{{ site.dbpass }}');"
-    - watch:
-      - {{ site.path }}/wp-config.php
+    - unless: !test -f {{ site.path }}/wp-config.php
 
-wp-config-dbhost:
+
+wp-config-dbhost_{{ id }}:
   file.replace:
     - name: {{ site.path }}/wp-config.php
     - pattern: "^define('DB_HOST'"
     - repl: "define('DB_NAME', '{{ site.dbhost }}');"
-    - watch:
-      - {{ site.path }}/wp-config.php
+    - unless: !test -f {{ site.path }}/wp-config.php
 
 #{{ site.path }}/wp-config.php:
 #  file.managed:
