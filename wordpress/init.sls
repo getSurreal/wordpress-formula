@@ -1,8 +1,4 @@
 {% from "wordpress/map.jinja" import map with context %}
-{% from "wordpress/cli-allow-root.sls" import allowroot with context %}
-
-include:
-  - wordpress.cli
 
 {% for id, site in salt['pillar.get']('wordpress:sites', {}).items() %}
 {{ site.get('path') }}:
@@ -16,23 +12,36 @@ include:
 download_wordpress_{{ id }}:
  cmd.run:
   - cwd: {{ site.get('path') }}
-  - name: '/usr/local/bin/wp core download {{ allowroot }} --path="{{ site.get('path') }}/"'
+  - name: 'wget https://wordpress.org/latest.tar.gz"'
   - runas: {{ site.get('dbuser') }}
   - unless: test -f {{ site.get('path') }}/wp-config.php
 
-# This command tells wp-cli to create our wp-config.php, DB info needs to be the same as above
-configure_{{ id }}:
+extract_wordpress_{{ id }}:
  cmd.run:
-  - name: '/usr/local/bin/wp core config {{ allowroot }} --dbname="{{ site.get('database') }}" --dbuser="{{ site.get('dbuser') }}" --dbpass="{{ site.get('dbpass') }}" --dbhost="{{ site.get('dbhost') }}" --path="{{ site.get('path') }}"'
   - cwd: {{ site.get('path') }}
+  - name: 'tar -xzvf latest.tar.gz"'
   - runas: {{ site.get('dbuser') }}
-  - unless: test -f {{ site.get('path') }}/wp-config.php  
+  - unless: test -f {{ site.get('path') }}/wp-config.php
 
-# This command tells wp-cli to install wordpress
-install_{{ id }}:
+move_wordpress_{{ id }}:
  cmd.run:
   - cwd: {{ site.get('path') }}
-  - name: '/usr/local/bin/wp core install {{ allowroot }} --url="{{ site.get('url') }}" --title="{{ site.get('title') }}" --admin_user="{{ site.get('username') }}" --admin_password="{{ site.get('password') }}" --admin_email="{{ site.get('email') }}" --path="{{ site.get('path') }}/"'
+  - name: 'mv wordpress/* . && rm -rf wordpress"'
   - runas: {{ site.get('dbuser') }}
-  - unless: /usr/local/bin/wp core is-installed {{ allowroot }} --path="{{ site.get('path') }}"
+  - unless: test -f {{ site.get('path') }}/wp-config.php
+
+{{ site.get('path') }}/wp-config.php:
+  file.managed:
+    - source: salt://wordpress/files/wp-config.php
+    - user: {{ site.get('dbuser') }}
+    - group: {{ site.get('dbuser') }}
+    - mode: 655
+
+{{ site.get('path') }}/.htaccess:
+  file.managed:
+    - source: salt://wordpress/files/htaccess
+    - user: {{ site.get('dbuser') }}
+    - group: {{ site.get('dbuser') }}
+    - mode: 655
+
 {% endfor %}

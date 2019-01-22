@@ -25,13 +25,13 @@
 define('DB_NAME', '{{ database }}');
 
 /** MySQL database username */
-define('DB_USER', '{{ username }}');
+define('DB_USER', '{{ dbuser }}');
 
 /** MySQL database password */
-define('DB_PASSWORD', '{{ password }}');
+define('DB_PASSWORD', '{{ dbpass }}');
 
 /** MySQL hostname */
-define('DB_HOST', 'localhost');
+define('DB_HOST', '{{ dbhost }}');
 
 /** Database Charset to use in creating database tables. */
 define('DB_CHARSET', 'utf8');
