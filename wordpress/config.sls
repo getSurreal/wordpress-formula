@@ -13,7 +13,7 @@ configure-{{ name }}:
  cmd.run:
   - name: '/usr/local/bin/wp core config {{ allowroot }} --dbhost={{ dbhost }} --dbname={{ site.database }} --dbuser={{ site.dbuser }} --dbpass={{ site.dbpass }}'
   - cwd: {{ site.path }}
-  - runas: {{ site.user }}
+  - runas: {{ site.dbuser }}
   - unless: test -f {{ site.path }}/wp-config.php
 
 {% endfor %}

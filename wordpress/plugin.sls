@@ -8,7 +8,7 @@ configure_plugin_{{ plugin_name }}:
  cmd.run:
   - name: '/usr/local/bin/wp plugin install {{ allowroot }} --activate {{ plugin_name }}'
   - cwd: {{ site.path }}
-  - runas: {{ site.user }}
+  - runas: {{ site.dbuser }}
   - unless: '/usr/local/bin/wp plugin is-installed {{ allowroot }} {{ plugin_name }}'
     {% endfor %}
   {% endif %}
