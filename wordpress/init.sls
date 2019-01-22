@@ -95,7 +95,7 @@ wp-config-LOGGED_IN_KEY_{{ id }}:
 wp-config-NONCE_KEY_{{ id }}:
   file.line:
     - name: {{ site.path }}/wp-config.php
-    - match: ^define\('ANONCE_KEY'.
+    - match: ^define\('NONCE_KEY'.
     - content: "define('NONCE_KEY', '{{ salt['random.get_str'](32) }}');"
     - mode: replace
 
