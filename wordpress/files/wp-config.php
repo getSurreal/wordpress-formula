@@ -22,16 +22,16 @@
 
 // ** MySQL settings - You can get this info from your web host ** //
 /** The name of the database for WordPress */
-define('DB_NAME', '{{ database }}');
+define('DB_NAME', '{{ site.get('database') }}');
 
 /** MySQL database username */
-define('DB_USER', '{{ dbuser }}');
+define('DB_USER', '{{ site.get('dbuser') }}');
 
 /** MySQL database password */
-define('DB_PASSWORD', '{{ dbpass }}');
+define('DB_PASSWORD', '{{ site.get('dbpass') }}');
 
 /** MySQL hostname */
-define('DB_HOST', '{{ dbhost }}');
+define('DB_HOST', '{{ site.get('dbhost') }}');
 
 /** Database Charset to use in creating database tables. */
 define('DB_CHARSET', 'utf8');

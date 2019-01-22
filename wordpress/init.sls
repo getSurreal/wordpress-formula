@@ -33,6 +33,9 @@ move_wordpress_{{ id }}:
 {{ site.get('path') }}/wp-config.php:
   file.managed:
     - source: salt://wordpress/files/wp-config.php
+    - template: jinja
+    - context:
+      site: site
     - user: {{ site.get('dbuser') }}
     - group: {{ site.get('dbuser') }}
     - mode: 655
