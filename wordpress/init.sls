@@ -5,7 +5,8 @@
   file.directory:
     - user: {{ site.dbuser }}
     - group: {{ site.dbuser }}
-    - mode: 755
+    - dir_mode: 755
+    - file_mode: 644
     - makedirs: True
 
 # This command tells wp-cli to download wordpress
@@ -39,7 +40,7 @@ move_wordpress_{{ id }}:
     - source: {{ site.path }}/wp-config-sample.php
     - user: {{ site.dbuser }}
     - group: {{ site.dbuser }}
-    - mode: 655
+    - mode: 640
     - watch:
       - move_wordpress_{{ id }}
 
@@ -127,21 +128,23 @@ wp-config-NONCE_SALT_{{ id }}:
     - content: "define('NONCE_SALT', '{{ salt['random.get_str'](32) }}');"
     - mode: replace
 
-#{{ site.path }}/wp-config.php:
-#  file.managed:
-#    - source: salt://wordpress/files/wp-config.php
-#    - template: jinja
-#    - context:
-#      site: {{ site }}
-#    - user: {{ site.dbuser }}
-#    - group: {{ site.dbuser }}
-#    - mode: 655
-
 {{ site.path }}/.htaccess:
   file.managed:
     - source: salt://wordpress/files/htaccess
     - user: {{ site.dbuser }}
     - group: {{ site.dbuser }}
-    - mode: 655
+    - mode: 640
+
+{{ site.path }}/wp-content:
+  file.directory:
+    - user: {{ site.dbuser }}
+    - group: {{ www_group }}
+    - group_mode: 755
+    - file_mode: 664
+    - recurse:
+      - user
+      - group
+      - mode
+
 
 {% endfor %}
