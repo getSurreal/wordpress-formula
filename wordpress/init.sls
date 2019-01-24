@@ -39,7 +39,7 @@ move_wordpress_{{ id }}:
   file.managed:
     - source: {{ site.path }}/wp-config-sample.php
     - user: {{ site.dbuser }}
-    - group: {{ site.dbuser }}
+    - group: {{ map.www_group }}
     - mode: 640
     - watch:
       - move_wordpress_{{ id }}
@@ -133,12 +133,12 @@ wp-config-NONCE_SALT_{{ id }}:
     - source: salt://wordpress/files/htaccess
     - user: {{ site.dbuser }}
     - group: {{ site.dbuser }}
-    - mode: 640
+    - mode: 644
 
 {{ site.path }}/wp-content:
   file.directory:
     - user: {{ site.dbuser }}
-    - group: {{ www_group }}
+    - group: {{ map.www_group }}
     - group_mode: 755
     - file_mode: 664
     - recurse:
