@@ -41,8 +41,7 @@ move_wordpress_{{ id }}:
     - user: {{ site.dbuser }}
     - group: {{ map.www_group }}
     - mode: 640
-    - watch:
-      - move_wordpress_{{ id }}
+    - unless: test -f {{ site.path }}/wp-config.php
 
 wp-config-database_{{ id }}:
   file.line:
@@ -78,6 +77,8 @@ wp-config-AUTH_KEY_{{ id }}:
     - match: ^define\('AUTH_KEY'.
     - content: "define('AUTH_KEY', '{{ salt['random.get_str'](32) }}');"
     - mode: replace
+    - onchanges:
+      - wp-config-dbhost_{{ id }}
 
 wp-config-SECURE_AUTH_KEY_{{ id }}:
   file.line:
@@ -85,6 +86,8 @@ wp-config-SECURE_AUTH_KEY_{{ id }}:
     - match: ^define\('SECURE_AUTH_KEY'.
     - content: "define('SECURE_AUTH_KEY', '{{ salt['random.get_str'](32) }}');"
     - mode: replace
+    - onchanges:
+      - wp-config-dbhost_{{ id }}
 
 wp-config-LOGGED_IN_KEY_{{ id }}:
   file.line:
@@ -92,6 +95,8 @@ wp-config-LOGGED_IN_KEY_{{ id }}:
     - match: ^define\('LOGGED_IN_KEY'.
     - content: "define('LOGGED_IN_KEY', '{{ salt['random.get_str'](32) }}');"
     - mode: replace
+    - onchanges:
+      - wp-config-dbhost_{{ id }}
 
 wp-config-NONCE_KEY_{{ id }}:
   file.line:
@@ -99,6 +104,8 @@ wp-config-NONCE_KEY_{{ id }}:
     - match: ^define\('NONCE_KEY'.
     - content: "define('NONCE_KEY', '{{ salt['random.get_str'](32) }}');"
     - mode: replace
+    - onchanges:
+      - wp-config-dbhost_{{ id }}
 
 wp-config-AUTH_SALT_{{ id }}:
   file.line:
@@ -106,6 +113,8 @@ wp-config-AUTH_SALT_{{ id }}:
     - match: ^define\('AUTH_SALT'.
     - content: "define('AUTH_SALT', '{{ salt['random.get_str'](32) }}');"
     - mode: replace
+    - onchanges:
+      - wp-config-dbhost_{{ id }}
 
 wp-config-SECURE_AUTH_SALT_{{ id }}:
   file.line:
@@ -113,6 +122,8 @@ wp-config-SECURE_AUTH_SALT_{{ id }}:
     - match: ^define\('SECURE_AUTH_SALT'.
     - content: "define('SECURE_AUTH_SALT', '{{ salt['random.get_str'](32) }}');"
     - mode: replace
+    - onchanges:
+      - wp-config-dbhost_{{ id }}
 
 wp-config-LOGGED_IN_SALT_{{ id }}:
   file.line:
@@ -120,6 +131,8 @@ wp-config-LOGGED_IN_SALT_{{ id }}:
     - match: ^define\('LOGGED_IN_SALT'.
     - content: "define('LOGGED_IN_SALT', '{{ salt['random.get_str'](32) }}');"
     - mode: replace
+    - onchanges:
+      - wp-config-dbhost_{{ id }}
 
 wp-config-NONCE_SALT_{{ id }}:
   file.line:
@@ -127,6 +140,8 @@ wp-config-NONCE_SALT_{{ id }}:
     - match: ^define\('NONCE_SALT'.
     - content: "define('NONCE_SALT', '{{ salt['random.get_str'](32) }}');"
     - mode: replace
+    - onchanges:
+      - wp-config-dbhost_{{ id }}
 
 {{ site.path }}/.htaccess:
   file.managed:
@@ -134,6 +149,7 @@ wp-config-NONCE_SALT_{{ id }}:
     - user: {{ site.dbuser }}
     - group: {{ site.dbuser }}
     - mode: 644
+    - unless: test -f {{ site.path }}/.htaccess
 
 {{ site.path }}/wp-content:
   file.directory:
