@@ -155,7 +155,7 @@ wp-config-NONCE_SALT_{{ id }}:
   file.directory:
     - user: {{ site.dbuser }}
     - group: {{ map.www_group }}
-    - group_mode: 755
+    - group_mode: 775
     - file_mode: 664
     - recurse:
       - user
