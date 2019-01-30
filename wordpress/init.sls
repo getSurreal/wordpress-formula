@@ -15,7 +15,7 @@ download_wordpress_{{ id }}:
   - cwd: {{ site.path }}
   - name: 'wget https://wordpress.org/latest.tar.gz'
   - runas: {{ site.dbuser }}
-  - unless: test -f {{ site.path }}/latest.tar.gz
+  - unless: test -f {{ site.path }}/wp-settings.php
 
 extract_wordpress_{{ id }}:
  cmd.run:
