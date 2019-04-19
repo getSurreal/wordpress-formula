@@ -3,8 +3,8 @@
 {% for id, site in salt['pillar.get']('wordpress:sites', {}).items() %}
 {{ site.path }}:
   file.directory:
-    - user: {{ site.dbuser }}
-    - group: {{ site.dbuser }}
+    - user: {{ id }}
+    - group: {{ id }}
     - dir_mode: 755
     - file_mode: 644
     - makedirs: True
@@ -14,14 +14,14 @@ download_wordpress_{{ id }}:
  cmd.run:
   - cwd: {{ site.path }}
   - name: 'wget https://wordpress.org/latest.tar.gz'
-  - runas: {{ site.dbuser }}
+  - runas: {{ id }}
   - unless: test -f {{ site.path }}/wp-settings.php
 
 extract_wordpress_{{ id }}:
  cmd.run:
   - cwd: {{ site.path }}
   - name: 'tar -xzvf latest.tar.gz'
-  - runas: {{ site.dbuser }}
+  - runas: {{ id }}
   - unless: test -f {{ site.path }}/wp-settings.php
   - watch:
     - download_wordpress_{{ id }}
@@ -30,7 +30,7 @@ move_wordpress_{{ id }}:
  cmd.run:
   - cwd: {{ site.path }}
   - name: 'mv wordpress/* . && rm -rf wordpress'
-  - runas: {{ site.dbuser }}
+  - runas: {{ id }}
   - unless: test -f {{ site.path }}/wp-settings.php
   - watch:
     - extract_wordpress_{{ id }}
@@ -38,7 +38,7 @@ move_wordpress_{{ id }}:
 {{ site.path }}/wp-config.php:
   file.managed:
     - source: {{ site.path }}/wp-config-sample.php
-    - user: {{ site.dbuser }}
+    - user: {{ id }}
     - group: {{ map.www_group }}
     - mode: 640
     - unless: test -f {{ site.path }}/wp-config.php
@@ -54,7 +54,7 @@ wp-config-dbuser_{{ id }}:
   file.line:
     - name: {{ site.path }}/wp-config.php
     - match: ^define\('DB_USER'.
-    - content: "define('DB_USER', '{{ site.dbuser }}');"
+    - content: "define('DB_USER', '{{ id }}');"
     - mode: replace
 
 wp-config-dbpass_{{ id }}:
@@ -146,14 +146,14 @@ wp-config-NONCE_SALT_{{ id }}:
 {{ site.path }}/.htaccess:
   file.managed:
     - source: salt://wordpress/files/htaccess
-    - user: {{ site.dbuser }}
-    - group: {{ site.dbuser }}
+    - user: {{ id }}
+    - group: {{ id }}
     - mode: 644
     - unless: test -f {{ site.path }}/.htaccess
 
 {{ site.path }}/wp-content:
   file.directory:
-    - user: {{ site.dbuser }}
+    - user: {{ id }}
     - group: {{ map.www_group }}
     - group_mode: 775
     - file_mode: 664
