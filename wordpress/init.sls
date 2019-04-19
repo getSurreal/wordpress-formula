@@ -54,7 +54,7 @@ wp-config-dbuser_{{ id }}:
   file.line:
     - name: {{ site.path }}/wp-config.php
     - match: ^define\('DB_USER'.
-    - content: "define('DB_USER', '{{ id }}');"
+    - content: "define('DB_USER', '{{ site.dbuser }}');"
     - mode: replace
 
 wp-config-dbpass_{{ id }}:
